@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>随机点名开始了</title>
+    <style>
+        body {
+            background-color: aliceblue;
+            background-image: url(./images/4.jpg);
+        }
+
+        h1 {
+            margin: 50px;
+            text-align: center;
+            color: rgb(212, 184, 184);
+            font-family: 'Times New Roman', Times, serif;
+        }
+
+        #box {
+            width: 1024px;
+            height: 521px;
+            background-color: cadetblue;
+            background-image: url(./images/10.jpg);
+            margin: 0 auto;
+            margin-top: 50px;
+        }
+
+        .name {
+            float: left;
+            font-size: 20px;
+            font-weight: 700;
+            font-family: 'Times New Roman', Times, serif;
+            width: 100px;
+            height: 44px;
+            line-height: 44px;
+            margin-left: 24px;
+            margin-top: 55px;
+            text-align: center;
+            border-radius: 15px;
+        }
+
+        input {
+            width: 150px;
+            height: 50px;
+            display: block;
+            margin: 0 auto;
+            margin-top: 45px;
+            font-weight: 700;
+            font-size: 22px;
+            background-color: yellow;
+        }
+
+        #span {
+            display: block;
+            float: right;
+            font-size: 22px;
+            font-weight: 700;
+            color: chocolate;
+            position: absolute;
+            top: 100px;
+            right: 880px;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>随机点名系统</h1>
+    <span id="span"></span>
+    <div id="box" class="box"></div>
+    <input type="button" id="btn" value="点名">
+
+
+
+    <script>
+        // 获取 id 函数
+        function my$(id) {
+            return document.getElementById(id);
+        }
+
+        // 模拟后台数据
+        var arr = ['刘小兰', '钟小妃', '王梦环', '邹媛', '孟祥宇', '况凤超', '余淑芬', '夏淑琴', '李媛燕', '刘玉琼', '高萍萍', '彭雅琴', '彭可欣', '李佳颖',
+            '张淑娟', '胡雪娟', '胡妍妍', '文海玲', '何媛', '上官婉婷', '蔡锦玲', '夏杨奕', '周倩', '许丽丽', '吴伟霞', '林苗', '江婉君'
+        ];
+
+        // 循环遍历动态创建 div 加入到 box 中
+        for (var i = 0; i < arr.length; i++) {
+            var div = document.createElement('div'); //创建 div 分别存放数据以便 后期设置样式
+            div.innerText = arr[i]; // div 中的内容为数组中的数据
+            div.className = 'name';
+            my$('box').appendChild(div); // 追加到 id 为 box 的盒子中
+        }
+
+        //rgb颜色随机
+        function rgb() {
+            var r = Math.floor(Math.random() * 256);
+            var g = Math.floor(Math.random() * 256);
+            var b = Math.floor(Math.random() * 256);
+            var rgb = '(' + r + ',' + g + ',' + b + ')';
+            return rgb;
+        }
+
+        // 获取时间函数
+        function getTime() {
+            var dt = new Date;
+            var year = dt.getFullYear();
+            var month = dt.getMonth();
+            var day = dt.getDate();
+            var hour = dt.getHours();
+            var minute = dt.getMinutes();
+            var second = dt.getSeconds();
+            month < 10 ? "0" + month : month;
+            day < 10 ? "0" + day : day;
+            hour < 10 ? "0" + hour : hour;
+            minute < 10 ? "0" + minute : minute;
+            second < 10 ? "0" + second : second;
+            my$('span').innerText = year + "年" + month + "月" + day + "日" + hour + ":" + minute + ":" + second;
+        }
+        getTime();
+        setInterval(getTime, 1000)
+
+
+        // 点名 
+        my$('btn').onclick = function () {
+
+            // 保存数组长度
+            var counts = arr.length;
+
+            // 监视按钮的状态
+            if (this.value == "点名") {
+                timeId = setInterval(function () {
+                    // 清除所有的 存放名字的 div 的颜色
+                    for (var j = 0; j < arr.length; j++) {
+                        my$('box').children[j].style.backgroundColor = '';
+                    }
+                    // 设置当前的 随机产生的 层的颜色
+                    var random = parseInt(Math.random() * counts);
+                    // console.log(random);
+                    my$('box').children[random].style.backgroundColor = "red";
+                }, 100);
+                this.value = "停止";
+            } else {
+                // 清理定时器
+                clearInterval(timeId);
+                my$('btn').value = "点名";
+            }
+        }
+    </script>
+</body>
+
+</html>
